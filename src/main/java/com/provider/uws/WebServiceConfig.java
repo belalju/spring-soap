@@ -30,7 +30,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName("ProvidersPort");
         wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://www.baeldung.com/springsoap/gen");
+        wsdl11Definition.setTargetNamespace("http://uws.provider.com/gen");
         wsdl11Definition.setSchema(providersSchema);
         return wsdl11Definition;
     }

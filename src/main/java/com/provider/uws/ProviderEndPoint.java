@@ -10,7 +10,9 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import javax.xml.bind.JAXBElement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Endpoint
 public class ProviderEndPoint {
@@ -22,19 +24,7 @@ public class ProviderEndPoint {
         this.utilityService = utilityService;
     }
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "checkTransaction")
-    @ResponsePayload
-    public JAXBElement<CheckTransactionResult> getTransaction(@RequestPayload JAXBElement<CheckTransactionArguments> request) {
-
-        System.out.println(request);
-        ObjectFactory factory = new ObjectFactory ( );
-        CheckTransactionResult response = new CheckTransactionResult ( );
-        CheckTransactionArguments req = request.getValue ( );
-        response.setProviderTrnId(req.getTransactionId());
-        return factory.createCheckTransactionResult ( response );
-    }
-
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetInformationArguments")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetInformation")
     @ResponsePayload
     public JAXBElement<GetInformationResult> getInformation(@RequestPayload JAXBElement<GetInformationArguments> request) {
         ObjectFactory factory = new ObjectFactory();
@@ -44,23 +34,48 @@ public class ProviderEndPoint {
 
         System.out.println("Service ID: " + requestValue.getServiceId());
 
+        response.setErrorMsg("");
         response.setStatus(0);
         response.setTimeStamp(utilityService.getCurrentTime());
 
         List<GenericParam> paramList = new ArrayList<GenericParam>();
-        GenericParam genericParam = new GenericParam();
-        genericParam.setParamKey("balance");
-        genericParam.setParamValue(RandomStringUtils.randomNumeric(5, 5));
-        paramList.add(genericParam);
-
-        genericParam = new GenericParam();
-        genericParam.setParamKey("name");
-        genericParam.setParamValue(RandomStringUtils.randomAlphabetic(5));
-        paramList.add(genericParam);
+        paramList.add(getGenericParam("balance", RandomStringUtils.randomNumeric(5, 5)));
+        paramList.add(getGenericParam("name", RandomStringUtils.randomAlphabetic(5)));
 
         response.parameters = paramList;
 
 
         return factory.createGetInformationResult ( response );
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "PerformTransaction")
+    @ResponsePayload
+    public JAXBElement<PerformTransactionResult> postTransaction(@RequestPayload JAXBElement<PerformTransactionArguments> request) {
+        ObjectFactory factory = new ObjectFactory();
+
+        PerformTransactionResult response = new PerformTransactionResult();
+        PerformTransactionArguments requestValue = request.getValue();
+
+        response.setErrorMsg("Ok");
+        response.setStatus(0);
+        response.setTimeStamp(utilityService.getCurrentTime());
+        response.setProviderTrnId(new Random().nextLong());
+
+        List<GenericParam> paramList = new ArrayList<GenericParam>();
+        paramList.add(getGenericParam("balance", String.valueOf(requestValue.getAmount())));
+        paramList.add(getGenericParam("traffic", RandomStringUtils.randomAlphabetic(5)));
+        paramList.add(getGenericParam("date", new Date().toString()));
+
+        response.parameters = paramList;
+
+
+        return factory.createPerformTransactionResult ( response );
+    }
+
+    private GenericParam getGenericParam(String key, String value){
+        GenericParam genericParam = new GenericParam();
+        genericParam.setParamKey(key);
+        genericParam.setParamValue(value);
+        return genericParam;
     }
 }

@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "e807fb5b-966b-4470-ae5b-1bc473e7ced1",
+		"name": "SOAP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3561548"
+	},
+	"item": [
+		{
+			"name": "Get Information",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n    <soapenv:Body>\n        <ns1:GetInformation xmlns:ns1=\"http://uws.provider.com/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:type=\"ns1:GetInformation\">\n            <password>pwd</password>\n            <username>user</username>\n            <parameters>\n                <paramKey>client_id</paramKey>\n                <paramValue>634247</paramValue>\n            </parameters>\n            <serviceId>3</serviceId>\n        </ns1:GetInformation>\n    </soapenv:Body>\n</soapenv:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/ws",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ws"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Perform Transaction",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope\n\txmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n\t<soapenv:Body>\n\t\t<ns1:PerformTransaction\n\t\t\txmlns:ns1=\"http://uws.provider.com/\"\n\t\t\txmlns:xsi=\"http://www.w3.org/ 2001/XMLSchema-instance\" xsi:type=\"ns1:PerformTransaction\">\n\t\t\t<password>pwd</password>\n\t\t\t<username>user</username>\n\t\t\t<amount>130000</amount>\n\t\t\t<parameters>\n\t\t\t\t<paramKey>customer_id</paramKey>\n\t\t\t\t<paramValue>6324357</paramValue>\n\t\t\t</parameters>\n\t\t\t<parameters>\n\t\t\t\t<paramKey>pin</paramKey>\n\t\t\t\t<paramValue>12345678</paramValue>\n\t\t\t</parameters>\n\t\t\t<serviceId>1</serviceId>\n\t\t\t<transactionId>437</transactionId>\n\t\t\t<transactionTime>2011-04-26T18:07:22</transactionTime>\n\t\t</ns1:PerformTransaction>\n\t</soapenv:Body>\n</soapenv:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/ws",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ws"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

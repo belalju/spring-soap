@@ -39,7 +39,7 @@ public class PerformTransactionResult
 {
 
     @XmlElement(nillable = true)
-    protected List<GenericParam> parameters;
+    public List<GenericParam> parameters;
     protected long providerTrnId;
 
     /**
